@@ -1,3 +1,7 @@
+// MIT License - Copyright (c) Matej Kogovsek
+// This file is subject to the terms and conditions defined in
+// LICENSE, which is part of this source code package
+
 #include <inttypes.h>
 
 #include <avr/io.h>
@@ -181,10 +185,18 @@ int main(void)
 }
 
 // Timer0 overflow
-// interrupts 8000000/64/125 = 1000 times per sec (every 1 ms)
+// interrupts every 1 ms
+//  8000000/64/125 = 1000
+// 16000000/64/250 = 1000
 ISR(TIMER0_OVF_vect)
 {
+#if F_CPU == 8000000
 	TCNT0 = 0xff - 125;
+#elif F_CPU == 16000000
+	TCNT0 = 0xff - 250;
+#else
+	#error Calculate TCNT0 for your F_CPU
+#endif
 	static uint16_t ms = 0;
 	// serial rx timeout
 	if( rxto_ms ) {
