@@ -71,7 +71,7 @@ volatile uint8_t calto_s = 0;
 
 void spi_cs(uint8_t a)
 {
-	gpio_set(LED_PIN, a);
+	gpio_set(SS_PIN, a);
 }
 
 uint8_t cc_wregs(const uint8_t ra[][2], uint8_t len)
